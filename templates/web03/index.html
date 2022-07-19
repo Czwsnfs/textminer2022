@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word2Vec</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/web03.css">
+</head>
+<body>
+    <div class="menu">
+        <a style='position: absolute;top:10%;text-decoration: none;color: aliceblue; padding-left: 50px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;'  href="#">数据中心</a>
+            <a style='position: absolute;top:20%;text-decoration: none;color: aliceblue;padding-left: 50px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;' href="#" target="_blank">词性分析</a>
+            <a style='position: absolute;top:30%;text-decoration: none;color: aliceblue;padding-left: 50px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;' href="#" target="_blank">词频统计</a>
+            <a style='position: absolute;top:40%;text-decoration: none;color: aliceblue;padding-left: 50px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;' href="#" target="_blank">词云图绘制</a>
+            <a style='position: absolute;top:50%;text-decoration: none;color: aliceblue;padding-left: 55px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;'href="{% url 'index3' %}" target="_blank">word2vec</a>
+            <a style='position: absolute;top:60%;text-decoration: none;color: aliceblue;padding-left: 45px;background: url(../../static/image/图片.png) no-repeat;background-size:25px;background-position: 10px ;'href="#" target="_blank">LDA主题模型</a>
+    </div>
+    <div class="header">
+        <span>TextMiner文本分析</span>
+            <a   id="head" style='position: absolute;right:6%;text-decoration: none;font-size:20px' href="#">通知</a> 
+            
+            <a id="head"style='position: absolute;text-decoration: none;font-size:20px' href="#">用户名</a>
+    </div>
+    <div class="m-context">
+        <div id="ci"> 相关词可视化</div>
+    </div>
+    <input id='search' type="search" name="word" placeholder="输入单个词或多个词，用中文逗号隔开"><span id="zi" style="color: white;">确定</span>
+    <label  style="position: absolute;top:31%;left:22%">输入相关词个数:</label><input id='q' style="position: absolute;top:31%;left:32%;width:5%"type="number">
+    <div id="pic">
+
+    </div>
+    <div class="r-context">
+        <span style="position: absolute;top:5%;font-size:18px;">相似度分析</span>
+        <input  id='word'style="top:15%;left:3%;position: absolute; width:68%" type="text" placeholder="在此输入单个词"> 
+        <span style="top:15%;position: absolute;right:9%;color: white" id="btn">确定</span> 
+        <span style="top:90%;position: absolute;right:9%;color: white" id="btn2"  onclick="del()">清除</span>
+    <div id="context"> </div>
+    </div>
+    
+       
+    
+    <div class="r-b-context">
+        <span style="position: absolute;top:3%;font-size:18px;">相似度查询</span></div>
+    <input  id='word1'style="top:73%;right:18%;position: absolute;width:6%" type="text" placeholder="词1"><span>：</span> <input  id='word2'style="top: 73%;position: absolute;right:10%;width:6%" type="text" placeholder="词2">
+    <span style="top:73%;right:5%;position: absolute;color: white;" id="btn1">查询</span>
+    <div id="sim"></div> 
+<div>
+    
+    <span  style="top:95%;left:93%;position: absolute;color: white;"  id="downloadci">导出词表</span>
+</div>
+<div >
+    <p style="top:89%;left:22%;position: absolute;font-size: 14px;" >文件名称</p><input style="top:91%;left:27%;width:10%;position: absolute" id="a_title" type="text">
+    <label style="top:95%;left:22%;height:3.5%;position: absolute;font-size: 13px;" id="label" for="file_upload">选择文件</label>
+    <input style="top:95%;left:22%;position: absolute;display: none;" id="file_upload" type="file">
+    <span style="top:95%;left:30%;position: absolute;color: white"  id ='upload'>训练文件</span>
+    <span  style="top:91%;left:62%;position: absolute;color: white;"  id="loadpic">查看可视化图片</span>
+    <span  style="top:96%;left:62%;position: absolute;color: white;"  id="downloadpic">导出可视化图片</span>
+</div>
+
+    
+</body>
+</html>
+<script type="text/javascript" src="../../static/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+$("#zi").click(function(){
+    $.ajax({
+    type:'POST',
+    url:'/web03/sim_visual/',
+    data:{
+      'a_title':$('#a_title').val(),
+      'word':$('#search').val(),
+      'n':$('#q').val(),
+    },
+    success:function (data)
+    {
+      $('#pic').html(data.graph)
+    },
+    error:function()
+    {
+        if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+            alert("请保持文件名称与导入文件名称相同！");
+        if($('#q').val()=='')
+            alert("请输入相关词个数！")
+        else
+            alert("载入失败！")
+    }
+  }) 
+ })
+ $("#btn").click(function()
+ {
+     $.ajax({
+         type:'POST',
+         url:'/web03/sim_visualdu/',
+         data:{
+            'a_title':$('#a_title').val(),
+             'word':$('#word').val()
+         },
+         success:function(data)
+         {
+            var word=$('#word').val();
+            $('#context').append("和"+word+"相关的词有:","</br>");
+                $.each(data.sim,function(i,n){
+
+                    $("#context").append(n[0],'\n',n[1].toFixed(4),"</br>");
+            })       
+            },
+            error:function()
+            {
+            if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+                    alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("载入失败！")
+            }
+         
+     })
+ })
+ function del()
+           {
+               $('#context').empty();
+           }   
+ $("#btn1").click(function()
+ {
+     $.ajax({
+         type:'POST',
+         url:'/web03/sim/',
+         data:{
+            'a_title':$('#a_title').val(),
+             'word1':$('#word1').val(),
+             'word2':$('#word2').val()
+         },
+         success:function(data)
+         {
+            //  console.log(data.sim1)
+           
+           $('#sim').text("相似度为："+data.sim1.toFixed(4));
+         },
+         error:function()
+         {
+            if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+            alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("载入失败！")
+         }
+     })
+ })
+
+$("#file_upload").change(function(){
+var file_value = $("#file_upload").val();
+var file_name = file_value.split("\\")[file_value.split("\\").length-1]
+$("#a_title").val(file_name);
+})
+$('#upload').click(function() {
+       var form_data = new FormData();
+       var file_info = $('#file_upload')[0].files[0];
+       form_data.append('myFile', file_info); //这里的myfile与视图中获取的request.FILES.get("myFile", None)要一致
+       event.target.value=null;
+       $.ajax({
+           url: '/web03/train/',
+           type: 'POST',
+           data:form_data,
+           processData: false,  // tell jquery not to process the data
+           contentType: false, // tell jquery not to set contentType
+           success: function (data) {
+                alert(data);
+           },
+           error:function()
+           {
+            if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+                alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("导入失败！")
+           }
+       })
+   })
+
+$("#downloadci").click(function()  {
+    // url="/app03/cbdownload/"
+    $.ajax({
+        type:'POST',
+        url:"/web03/cbdownload/",
+        data:
+        {
+        'a_title':$('#a_title').val()
+        },
+        success:function(response)
+        {
+        // console.log(response);
+        //    csv=response;
+        var BOM = '\uFEFF';//解决excel乱码问题
+        csv = BOM + response;
+        filename='词表.csv';
+           var a=document.createElement('a');
+           a.href='data:attachment/csv,'+encodeURI(csv)
+        //    console.log(a.herf)
+           a.target='_blank';
+           a.download=filename;
+           document.body.appendChild(a);
+           a.click();
+           document.body.removeChild(a);
+    },
+    error:function()
+    {
+        if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+            alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("导出失败！")
+        
+    }
+})})
+$("#downloadpic").click(function()  {
+    
+    $.ajax({
+        type:'POST',
+        responseType:"blob",
+        url:"/web03/pic_download/",
+        data:
+        {
+        'a_title':$('#a_title').val()
+        },
+        success:function(response)
+        {  
+        var a_title=$('#a_title').val();
+        var picname=a_title+"词向量可视化";
+        var aLink = document.createElement('a');
+        aLink.download = "1.png";
+        aLink.href = '../../static/png/'+picname+'.png';
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+    },
+    error:function(err)
+    {
+        if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+            alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("导出失败！")
+    }
+})})  
+$("#loadpic").click(function()
+{
+    alert("稍等一下哦，在快马飞鞭啦！")
+    $.ajax({
+        type:'POST',
+        url:'/web03/visual/',
+        data:
+        {
+            'a_title':$('#a_title').val()
+        },
+        success:function(data)
+        {
+            $('#pic').html(data);
+        },
+        error:function()
+        {
+            if($('#a_title').val()==''||$('#a_title').val()!=$("#file_upload").val().split("\\")[$("#file_upload").val().split("\\").length-1])
+            alert("请保持文件名称与导入文件名称相同！");
+        else
+            alert("载入失败！")
+        }
+})
+})  
+ </script>

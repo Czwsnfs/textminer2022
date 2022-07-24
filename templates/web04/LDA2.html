@@ -1,0 +1,803 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextMiner:文本输入</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.863);
+            background-size: cover;
+            line-height: 1.15;
+        }
+        
+        a::after {
+            text-decoration: none;
+            color: rgb(14, 12, 12);
+        }
+        
+        ul {
+            display: flex;
+            color: rgb(15, 13, 13);
+        }
+        
+        a {
+            background: url(../../static/image/图片.png) no-repeat;
+            background-size:25px;
+            background-position: 10px ;
+            font-size: 22px;
+            text-decoration: none;
+            color: gray;
+        }
+        
+        #Info1 {
+            position: absolute;
+            font-size: 25px;
+            left: 50px;
+            top: 15px;
+            color: white;
+        }
+        
+        header {
+            width: 100%;
+            height: 68px;
+            background-color: rgb(2, 2, 99);
+            background-size: 100%;
+            position: relative;
+            top: 0%;
+            left: 0%;
+            color: white;
+        }
+        
+        header h1 {
+            position: absolute;
+            font-size: 25px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            left: 50px;
+            top: 1px;
+            color: white;
+        }
+        
+        header .user {
+            position: absolute;
+            top: 25px;
+            right: 10px;
+            line-height: 1px;
+            font-size: 20px;
+            color: rgba(221, 214, 214, 0.825);
+        }
+        
+        .mainbox {
+            min-width: 1024px;
+            max-width: 1920px;
+            bottom: 0;
+            display: flex;
+        }
+        
+        .mainbox .column {
+            flex: 3;
+        }
+        
+        .mainbox .column:nth-child(2) {
+            flex: 5;
+            margin: 0 0.125rem 0.1875rem;
+            overflow: hidden;
+        }
+        
+        .mainbox .column:nth-child(3) {
+            flex: 2.5;
+            margin: 0 0.1rem 0.1rem;
+            bottom: 10%;
+            overflow: visible;
+            color: #000;
+        }
+        
+        .mainbox .column:nth-child(1) {
+            flex: 1.4;
+            margin: 0 0.125rem 0.1875rem;
+        }
+        
+        .panel {
+            position: relative;
+            overflow: visible;
+            height: 570px;
+            border: 1px solid rgba(228, 234, 232, 0.17);
+            background: rgb(255, 255, 255, 0.04);
+            color: #1d1919;
+            padding: 0 0.1875rem 0.1rem;
+            margin-bottom: 0rem;
+        }
+        
+        .panel-1 {
+            width: 15%;
+            height: 590px;
+            background-color: rgba(0, 0, 0, 1);
+            
+            position: absolute;
+            font-size: 30px;
+            top: 10%;
+            left: 0%;
+            color: gray;
+        }
+        
+        .panel .bia {
+            position: absolute;
+            overflow: visible;
+            height: 100px;
+            width: 350px;
+            top: 25px;
+            left: 25px;
+            bottom: 0px;
+            background: rgba(28, 31, 31, 0.04);
+            text-align: center;
+            color: rgb(19, 15, 15);
+            font-size: 12px;
+            font-weight: 20px;
+        }
+        
+        .panel .bia ul {
+            top: 25px;
+            left: 5px;
+            color: rgb(19, 15, 15);
+            font-size: 13px;
+            font-weight: 20px;
+        }
+        
+        .panel .chart {
+            color: gray;
+            height: 500px;
+            width: 740px;
+            margin-bottom: 0.07rem;
+            bottom: 0%;
+            right: 5%;
+            left: 1%;
+            position: relative;
+        }
+        
+        .panel .chart1 {
+            color: gray;
+            height: 400px;
+            width: 350px;
+            margin-bottom: 0.01rem;
+            bottom: 10%;
+            top: 0%;
+            position: relative;
+        }
+        
+        .panel h2 {
+            height: 0.6rem;
+            line-height: 0.6rem;
+            text-align: center;
+            color: gray;
+            font-size: 25px;
+            font-weight: 400;
+        }
+        
+        .panel a {
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 200;
+        }
+        
+        .no .no-hd {
+            position: relative;
+            border: 1px solid rgb(25, 186, 139, 0.17);
+        }
+        
+        .no .no-hd::before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            border-top: 2px solid #02a6b5;
+            border-left: 2px solid #02a6b5;
+            top: 0;
+            left: 0;
+        }
+        
+        .no .no-hd::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            border-bottom: 2px solid #02a6b5;
+            border-right: 2px solid #02a6b5;
+            right: 0;
+            bottom: 0;
+        }
+        
+        .no .no-hd ul {
+            display: flex;
+        }
+        
+        .no .no-hd ul li {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            height: 1rem;
+            line-height: 1rem;
+            font-size: 0.875rem;
+            color: #ffeb7b;
+            padding: 0.05rem 0;
+            font-family: electronicFont;
+            font-weight: bold;
+        }
+        
+        .no .no-hd ul li:first-child::after {
+            content: "";
+            position: absolute;
+            height: 50%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            right: 0;
+            top: 25%;
+        }
+        
+        .no .no-bd ul {
+            display: flex;
+        }
+        
+        .no .no-bd ul li {
+            flex: 1;
+            height: 0.5rem;
+            line-height: 0.5rem;
+            text-align: center;
+            font-size: 0.225rem;
+            color: rgba(255, 255, 255, 0.7);
+            padding-top: 0.125rem;
+        }
+        
+        #container {
+            width: 100%;
+            height: 600px;
+            position: absolute;
+            font-size: 35px;
+            top: 10%;
+            left: 0%;
+            color: gray;
+        }
+        
+        #Info {
+            position: absolute;
+            font-size: 20px;
+            right: 50px;
+            top: 15px;
+            color: white;
+        }
+        
+        #t_sub {
+            position: absolute;
+            font-size: 20px;
+            right: 50px;
+            top: 15px;
+            color: white;
+        }
+        
+        #block {
+            width: 84.8%;
+            height: 600px;
+            background-color: white;
+            position: absolute;
+            font-size: 40px;
+            top: 9.5%;
+            left: 15%;
+            right: 0%;
+            border-style: dashed;
+        }
+        
+        .t_sub {
+            right: 18%;
+            top: 25%;
+        }
+        
+        .text {
+            width: 36%;
+            height: 25px;
+            position: absolute;
+            top: 45%;
+            right: 45%;
+            border-style: solid;
+            background-color: whitesmoke;
+        }
+        
+        .top {
+            left: 10%;
+            color: rgb(19, 15, 15);
+            position: absolute;
+        }
+        
+        #write {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Text_Miner文本分析</h1>
+        <div class="user">
+            <a href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp登录</a>
+            <span>|</span>
+            <a href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp注册</a>
+            <span>|</span>
+            <span><a href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp消息通知</a></span>
+        </div>
+    </header>
+    <section class="mainbox">
+        <div class="column">
+            <div class="panel-1">
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp数据中心</a></div>
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp词性分析</a></div>
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp词频统计</a></div>
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp词云图绘制</a></div>
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbspword2vec</a></div>
+            </br>
+            <div><a target="_blank" href="{% url 'index' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbspLDA</a></div>
+        </div>
+    </div>
+        <div class="column">
+            <div class="panel line1">
+                <h2>主题词概率分布图</h2>
+                <div class="chart"></div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="panel bar1">
+                <form action="{% url 'analyze11' %}" method="post" enctype="multipart/form-data" id="top">
+                    {% csrf_token %}
+                    <br>
+                    <br> 主题数：
+                    <input type="number" name="a" id="top" style="width:60px;height:20px"> &nbsp 词数：
+                    <input type="number" name="b" id="top" style="width:60px;height:20px">
+                    <input type="submit" value="确认" id="top"><br>
+                </form>
+                <div class="chart1"></div>
+                <br>
+                <br>
+                <form action="{% url 'analyze13' %}" method="post" enctype="multipart/form-data" id="top">
+                    {% csrf_token %}<label>主题:</label>
+                    <input name="a" id="top" style="width:60px;height:20px"> &nbsp&nbsp&nbsp修改为：
+                    <input name="b" id="top" style="width:80px;height:20px"><input type="submit" value="确定" id="top">
+                </form>
+                <br>
+                <a class="downloadbtn" href="../static/test/topic_terms11.csv" download="分析结果.csv">点击下载详细分析结果</a> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <a class="downloadbtn" href="../static/test/alltopic.csv" download="分析结果.csv">点击下载主题分布结果</a>
+            </div>
+        </div>
+    </section>
+    <script>
+        function frontDwonload() {
+            var a = document.createElement("a");
+            a.href = "../static/test/topic_terms11.csv";
+            a.download = "主题分析结果.csv";
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+    </script>
+    <script src="../static/js/echarts.min.js"></script>
+    <script src="../static/js/jquery-3.6.0.min.js"></script>
+    <script type="trxt/javascript" src="../static/test/topic_terms11.json"></script>
+    <script>
+        function fetchData(arr) {
+            return Array.form(new set(arr))
+        }
+        (function() {
+            // 实例化对象
+            var checkName = '';
+            var myChart = echarts.init(document.querySelector(".line1 .chart"));
+
+            function distinct(arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    for (let j = i + 1; j < arr.length; j++) {
+                        if (arr[i] === arr[j]) {
+                            arr.splice(j, 1)
+                            j--;
+                        }
+                    }
+                }
+            }
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        saveAsTmage: {
+                            show: true
+                        }
+                    }
+                },
+                backgroundColor: 'white',
+                calculable: true,
+                xAxis: {
+                    type: 'value',
+                    "axisTick": { //y轴刻度线
+                        "show": false
+                    },
+                    "splitLine": { //网格线
+                        "show": false
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: []
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {
+                            type: ['stack', 'tiled']
+                        },
+                        dataView: {}
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        color: "black",
+                        fontSize: 11,
+                        position: 'right',
+                        formatter: function(data) {
+                            return data.value;
+                        }
+                    }
+                },
+                grid: {
+                    right: '1%',
+                    left: '12%',
+                    top: '1%',
+                    bottom: '5%',
+                },
+                series: [{
+                    color: '#348cde',
+                    type: 'bar',
+                    data: [],
+                }]
+            };
+            myChart.setOption(option);
+            $.getJSON('../static/test/topic_terms11.json', function(json) {
+                var plantCap = json;
+                var m = plantCap.length
+                var c = [];
+                for (var i = 0; i < plantCap.length; i++) {
+                    c.push(plantCap[i].topic_id)
+                }
+                distinct(c)
+                var f = ["\"topic0\"", "\"topic1\"", "\"topic2\"", "\"topic3\"", "\"topic4\"", "\"topic4\"", "\"topic5\"", "\"topic6\"", "\"topic7\"", "\"topic8\"", "\"topic9\"", "\"topic10\"", "\"topic11\""]
+                for (var i = 0; i < m / 10; i++) {
+                    f[i] = "\"" + c[i] + "\""
+                }
+                var data2 = {}
+                var term = [];
+                var prob = [];
+                for (var i = 0; i < plantCap.length; i++) {
+                    term.push(plantCap[i].term)
+                }
+                distinct(term)
+                for (var j = 0; j < c.length; j++) {
+                    var key = "\"" + c[j] + "\""
+                    var a = []
+                    var b = []
+                    for (var k = 1; k < plantCap.length; k++) {
+                        if (plantCap[k].topic_id === c[j]) {
+                            a.push(plantCap[k].term);
+                            b.push(plantCap[k].prob);
+                        }
+                    }
+                    data2[key] = [a, b]
+                }
+                distinct(f)
+                console.log(b)
+                console.log(f)
+                console.log(data2)
+                var option = {
+                    tooltip: {
+                        trigger: 'axis',
+                    },
+                    backgroundColor: '#eee',
+                    calculable: true,
+                    xAxis: {
+                        realtimeSort: true,
+                        type: 'value',
+                        "axisTick": { //y轴刻度线
+                            "show": false
+                        },
+                        "splitLine": { //网格线
+                            "show": false
+                        }
+                    },
+                    yAxis: {
+                        realtimeSort: true,
+                        inverse: true,
+                        type: 'category',
+                        data: data2[f[0]][0]
+                    },
+                    label: {
+                        normal: {
+                            show: true,
+                            color: "black",
+                            fontSize: 11,
+                            position: 'right',
+                            formatter: function(data) {
+                                return data.value;
+                            }
+                        }
+                    },
+                    grid: {
+                        right: '1%',
+                        left: '12%',
+                        top: '0%',
+                        bottom: '5%',
+                    },
+                    series: [{
+                        xAxisIndex: 0,
+                        yAxisIndex: 0,
+                        name: f[0],
+                        stack: 'one',
+                        color: '#419fff',
+                        type: 'bar',
+                        barWidth: 18,
+                        data: data2[f[0]][1],
+                    }]
+                };
+                myChart.setOption(option)
+            });
+            // 指定配置和数据
+            var myChart1 = echarts.init(document.querySelector(".bar1 .chart1"));
+            $.getJSON('../static/test/alltopic.json', function(json1) {
+                var d = json1;
+                var plantCap = d = json1;
+                var datalist = [{
+                    offset: [56, 88],
+                    opacity: .95,
+                    color: 'skyblue'
+                }, {
+                    offset: [-35, 80],
+                    opacity: .88,
+                    color: 'skyblue'
+                }, {
+                    offset: [-23, -43],
+                    opacity: .84,
+                    color: 'skyblue'
+                }, {
+                    offset: [56, 30],
+                    opacity: .8,
+                    color: 'skyblue'
+                }, {
+                    offset: [36, -20],
+                    opacity: .75,
+                    color: 'skyblue'
+                }, {
+                    offset: [-64, 30],
+                    opacity: .7,
+                    color: 'skyblue'
+                }, {
+                    offset: [75, 75],
+                    opacity: .68,
+                    color: 'skyblue'
+                }, {
+                    offset: [88, 62],
+                    opacity: .6,
+                    color: 'skyblue'
+                }, {
+                    offset: [16, 28],
+                    opacity: .95,
+                    color: 'skyblue'
+                }, {
+                    offset: [-65, 30],
+                    opacity: .88,
+                    color: 'skyblue'
+                }, {
+                    offset: [-53, -73],
+                    opacity: .84,
+                    color: 'skyblue'
+                }, {
+                    offset: [16, 20],
+                    opacity: .8,
+                    color: 'skyblue'
+                }, {
+                    offset: [46, -10],
+                    opacity: .75,
+                    color: 'skyblue'
+                }, {
+                    offset: [-84, 10],
+                    opacity: .7,
+                    color: 'skyblue'
+                }, {
+                    offset: [25, 75],
+                    opacity: .68,
+                    color: 'skyblue'
+                }, {
+                    offset: [8, 62],
+                    opacity: .6,
+                    color: 'skyblue'
+                }];
+                var datas = [];
+                for (var i = 0; i < plantCap.length; i++) {
+                    var item = plantCap[i];
+                    var itemToStyle = datalist[i];
+                    datas.push({
+                        name: item.topic,
+                        tooltip: item.prob,
+                        value: itemToStyle.offset,
+                        symbolSize: Math.sqrt(item.prob) * 2e2,
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: "black",
+                                    fontSize: 11
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: itemToStyle.color,
+                                opacity: itemToStyle.opacity
+                            }
+                        },
+                    })
+                }
+                var option2 = {
+                    grid: {
+                        right: '0%',
+                        left: '1%',
+                        top: '10%',
+                        bottom: '0%',
+                    },
+                    xAxis: [{
+                        gridIndex: 0,
+                        type: 'value',
+                        show: true,
+                        min: -100,
+                        max: 100,
+                        nameLocation: 'middle',
+                        nameGap: 5,
+                        "axisTick": { //y轴刻度线
+                            "show": false
+                        },
+                        "splitLine": { //网格线
+                            "show": false
+                        }
+                    }],
+                    yAxis: [{
+                        gridIndex: 0,
+                        min: -100,
+                        show: true,
+                        max: 150,
+                        nameLocation: 'middle',
+                        nameGap: 30,
+                        "axisTick": { //y轴刻度线
+                            "show": false
+                        },
+                        "splitLine": { //网格线
+                            "show": false
+                        }
+                    }],
+                    series: [{
+                        type: 'scatter',
+                        symbol: 'circle',
+                        background:'gray',
+                        symbolSize: 120,
+                        data: datas,
+                        emphasis: {
+                            focus: 'series',
+                            itemStyle: {
+                                color: '#f66868',
+                            }
+                        },
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(120, 36, 50, 0.5)',
+                            shadowOffsetY: 5,
+                            color: 'skyblue'
+                        },
+                        tooltip: {
+                            formatter: function(d) {
+                                return d.name + '参加人数:' + d.data.value
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: '{b}',
+                                color: '#fff',
+                                textStyle: {
+                                    fontSize: '20'
+                                }
+                            },
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#00acea'
+                            }
+                        },
+                        data: datas
+                    }]
+                };
+                myChart1.setOption(option2);
+            });
+            myChart1.on('click', function(params) {
+                console.log(params)
+                $.getJSON('../static/test/topic_terms11.json', function(json) {
+                    var plantCap = json;
+                    var c = [];
+                    for (var i = 0; i < plantCap.length; i++) {
+                        c.push(plantCap[i].topic_id)
+                    }
+                    distinct(c)
+                    var data2 = {}
+                    var term = [];
+                    var prob = [];
+                    for (var i = 0; i < plantCap.length; i++) {
+                        term.push(plantCap[i].term)
+                    }
+                    distinct(term)
+                    for (var j = 0; j < c.length; j++) {
+                        var key = "\"" + c[j] + "\""
+                        var a = []
+                        var b = []
+                        for (var k = 1; k < plantCap.length; k++) {
+                            if (plantCap[k].topic_id === c[j]) {
+                                a.push(plantCap[k].term);
+                                b.push(plantCap[k].prob);
+                            }
+                        }
+                        data2[key] = [a, b]
+                    }
+                    console.log(c)
+                    console.log(data2[key][1])
+                    console.log(plantCap.length)
+                    console.log(data2)
+                    console.log(params.name)
+                    var checkName = "\"" + params.name + "\""
+                    myChart.setOption({
+                        title: {
+                            subtext: checkName
+                        },
+                        xAxis: {
+                            realtimeSort: true,
+                            data: data2[checkName][1],
+                            type: 'value'
+                        },
+                        yAxis: {
+                            realtimeSort: true,
+                            type: 'category',
+                            data: data2[checkName][0]
+                        },
+                        series: [{
+                            color: '#f04e46b4',
+                            data: data2[checkName][1],
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'inside'
+                                }
+                            },
+                        }]
+                    })
+                });
+            });
+            window.addEventListener("resize", function() {
+                myChart.resize();
+            });
+        })();
+    </script>
+    <script type="trxt/javascript" src="../static/test/alltopic.json"></script>
+</body>
+
+</html>
